@@ -1,7 +1,17 @@
-use std::io::{self, stdout, stderr, Write};
+use std::io::{self, stderr, stdout, Write};
+
+mod vec3;
 
 fn main() {
     let _ = make_ppm();
+
+    let v1 = vec3::Vec3::new(0.0, 0.0, 0.);
+
+    let _ = v1.x();
+    let _ = v1.y();
+    let _ = v1.z();
+
+    let _ = v1[1];
 }
 
 fn make_ppm() -> io::Result<()> {
