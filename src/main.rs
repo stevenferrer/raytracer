@@ -1,5 +1,6 @@
 use std::io::{self, stderr, stdout, Write};
 
+mod color;
 mod vec3;
 
 fn main() {
@@ -36,11 +37,8 @@ fn make_ppm() -> io::Result<()> {
             let g = j as f32 / (image_height - 1) as f32;
             let b = 0.25;
 
-            let ir = (255.999 * r) as i32;
-            let ig = (255.999 * g) as i32;
-            let ib = (255.999 * b) as i32;
-
-            stdout.write_fmt(format_args!("{} {} {}\n", ir, ig, ib))?;
+            let pixel_color = color::Color::new(r, g, b);
+            color::write_color(&mut stdout, pixel_color);
 
             i += 1;
         }

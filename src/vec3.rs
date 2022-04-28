@@ -1,12 +1,10 @@
+use std::io::Write;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, Mul, MulAssign, Neg, Sub};
 
 #[derive(Copy, Clone)]
 pub struct Vec3 {
     e: [f32; 3],
 }
-
-// type Point3 = Vec3;
-// type Color = Vec3;
 
 impl Vec3 {
     pub fn new(e0: f32, e1: f32, e2: f32) -> Self {
@@ -27,6 +25,12 @@ impl Vec3 {
     pub fn unit_vector(v: Vec3) -> Vec3 {
         v / v.length()
     }
+}
+
+pub fn write_vector<W: Write>(mut stream: W, v: &Vec3) {
+    stream
+        .write_fmt(format_args!("{} {} {}", v.e[0], v.e[1], v.e[2]))
+        .unwrap();
 }
 
 impl Vec3 {
@@ -159,6 +163,7 @@ impl Sub for Vec3 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::BufWriter;
 
     #[test]
     fn new() {
@@ -168,6 +173,18 @@ mod tests {
         assert_eq!(x, v.x());
         assert_eq!(y, v.y());
         assert_eq!(z, v.z());
+    }
+
+    #[test]
+    fn write_vector() {
+        let (x, y, z) = (1.0, 2.0, 3.0);
+        let v = Vec3::new(x, y, z);
+
+        let mut buffer = [0u8; 5];
+        let writer = BufWriter::new(buffer.as_mut());
+        super::write_vector(writer, &v);
+
+        assert_eq!("1 2 3", String::from_utf8_lossy(&buffer))
     }
 
     #[test]
