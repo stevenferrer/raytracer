@@ -1,7 +1,8 @@
+use std::cmp::Eq;
 use std::io::Write;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, Mul, MulAssign, Neg, Sub};
 
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct Vec3 {
     e: [f32; 3],
 }
@@ -21,10 +22,10 @@ impl Vec3 {
         let z = u.e[0] * v.e[1] - u.e[1] * v.e[0];
         Vec3 { e: [x, y, z] }
     }
+}
 
-    pub fn unit_vector(v: Vec3) -> Vec3 {
-        v / v.length()
-    }
+pub fn unit_vector(v: Vec3) -> Vec3 {
+    v / v.length()
 }
 
 pub fn write_vector<W: Write>(mut stream: W, v: &Vec3) {
@@ -55,6 +56,14 @@ impl Vec3 {
         x * x + y * y + z * z
     }
 }
+
+impl PartialEq for Vec3 {
+    fn eq(&self, other: &Self) -> bool {
+        self.e[0] == other.e[0] && self.e[1] == other.e[1] && self.e[2] == other.e[2]
+    }
+}
+
+impl Eq for Vec3 {}
 
 impl Index<usize> for Vec3 {
     type Output = f32;
@@ -290,5 +299,15 @@ mod tests {
         assert_eq!(2.0, v4.x());
         assert_eq!(8.0, v4.y());
         assert_eq!(18.0, v4.z());
+    }
+
+    #[test]
+    fn eq_op() {
+        let v1 = Vec3::new(1.0, 2.0, 3.0);
+        let v2 = Vec3::new(1.0, 2.0, 3.0);
+        let v3 = Vec3::new(2.0, 3.0, 4.0);
+
+        assert_eq!(v1, v2);
+        assert_ne!(v1, v3);
     }
 }

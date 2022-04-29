@@ -1,3 +1,3 @@
-mod vec3;
+use crate::vec3::Vec3;
 
-type Point3 = vec3::Vec3;
+pub type Point3 = Vec3;

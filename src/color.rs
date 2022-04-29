@@ -1,8 +1,8 @@
 use std::io::Write;
 
-use crate::vec3;
+use crate::vec3::Vec3;
 
-pub type Color = vec3::Vec3;
+pub type Color = Vec3;
 
 pub fn write_color<W: Write>(mut stream: W, pixel_color: Color) {
     let x = (255.999 * pixel_color.x()) as i32;
