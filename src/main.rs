@@ -6,6 +6,7 @@ mod point3;
 mod ray;
 mod vec3;
 
+use color::Color;
 use point3::Point3;
 use ray::Ray;
 use vec3::Vec3;
@@ -14,7 +15,20 @@ fn main() {
     let _ = make_ppm();
 }
 
+fn hit_sphere(center: &Point3, radius: f32, r: &Ray) -> bool {
+    let oc = r.origin() - *center;
+    let a = Vec3::dot(&r.direction(), &r.direction());
+    let b = 2.0 * Vec3::dot(&oc, &r.direction());
+    let c = Vec3::dot(&oc, &oc) - radius * radius;
+    let discriminant = b * b - 4.0 * a * c;
+    discriminant > 0.0
+}
+
 fn ray_color(r: &ray::Ray) -> color::Color {
+    if hit_sphere(&Point3::new(0.0, 0.0, -1.0), 0.5, r) {
+        return Color::new(1.0, 0.0, 0.0);
+    }
+
     let unit_dir = vec3::unit_vector(r.direction());
     let t = 0.5 * (unit_dir.y() + 1.0);
 
