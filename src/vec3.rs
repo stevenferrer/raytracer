@@ -25,6 +25,12 @@ impl Vec3 {
 }
 
 pub fn unit_vector(v: Vec3) -> Vec3 {
+    // note: this process is here to
+    // "strip" the vector of its
+    // magnitude, get it?
+    // Basically, the vectors differ only by length/magnitude.
+    // If we make the vector only 1 "unit" in length, you get
+    // the unit vector.
     v / v.length()
 }
 

@@ -22,6 +22,9 @@ impl Ray {
     }
 
     pub fn at(&self, t: f32) -> Point3 {
+        // note: here, 't' "slides" the 
+        // ray back and forth along the 
+        // 3D line.
         self.orig + t * self.dir
     }
 }
