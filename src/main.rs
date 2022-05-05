@@ -36,11 +36,17 @@ fn ray_color(r: &ray::Ray) -> Color {
     }
 
     let unit_dir = vec3::unit_vector(r.direction());
+    // a standard graphics trick of scaling that to 0.0≤t≤1.0.
+    // When t=1.0 I want blue. When t=0.0 I want white.  In between, I want a blend.
     let t = 0.5 * (unit_dir.y() + 1.0);
 
     let c1 = color::Color::new(1.0, 1.0, 1.0);
     let c2 = color::Color::new(0.5, 0.7, 1.0);
 
+    // This forms a “linear blend”, or “linear interpolation”, 
+    // or “lerp” for short,between two things. A lerp is always 
+    // of the form blendedValue = (1−t)⋅startValue + t⋅endValue,
+    // with t going from zero to one.
     (1.0 - t) * c1 + t * c2
 }
 
